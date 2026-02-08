@@ -14,7 +14,7 @@ class InvalidNameException(Exception):
 class Patron:
     """Patron class used to represent a user for a library."""
 
-    def __init__(self, fname, lname, age, memberID):
+    def __init__(self, fname: str, lname: str, age: int, memberID: str):
         """Constructor for the Patron class.
 
         :param fname: the first name for the Patron
@@ -23,13 +23,17 @@ class Patron:
         :param memberID: the ID for the Patron in the library's system
         """
 
-        if re.search('\d', fname) or re.search('\d', lname):
+        if re.search(r'\d', fname) or re.search(r'\d', lname):
             raise InvalidNameException("Name should not contain numbers")
         self.fname = fname
         self.lname = lname
         self.age = age
         self.memberID = memberID
         self.borrowed_books = []
+
+    def with_age(self, age: int) -> 'Patron':
+        """Creates a new Patron object with the same attributes as the current Patron, but with a different age."""
+        return Patron(self.fname, self.lname, age, self.memberID)
 
     def add_borrowed_book(self, book):
         """Adds a book to the list of borrowed books for the Patron

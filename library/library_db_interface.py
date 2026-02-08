@@ -3,6 +3,7 @@ Filename: library_db_interface.py
 Description: module used for interacting with the local database
 """
 
+from typing import Optional
 from library.patron import Patron
 from tinydb import TinyDB, Query
 import os
@@ -12,11 +13,13 @@ class Library_DB:
 
     DATABASE_FILE = 'db.json'
 
-    def __init__(self):
+    def __init__(self, start_clean=False):
         """Constructor for the Library_DB object."""
+        if start_clean and os.path.exists(self.DATABASE_FILE):
+            os.remove(self.DATABASE_FILE)
         self.db = TinyDB(self.DATABASE_FILE)
 
-    def insert_patron(self, patron):
+    def insert_patron(self, patron: Patron) -> Optional[int]:
         """Inserts a Patron into the database.
         
         :param patron: the Patron object
@@ -27,8 +30,7 @@ class Library_DB:
         if self.retrieve_patron(patron.get_memberID()): # patron already in db
             return None
         data = self.convert_patron_to_db_format(patron)
-        id = self.db.insert(data)
-        return id
+        return self.db.insert(data)
 
     def get_patron_count(self):
         """Gets the number of Patrons in the database.
