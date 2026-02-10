@@ -22,12 +22,12 @@ def main():
     updated_patron = bryan.with_age(21)
     library_svc.update_patron(updated_patron)
     # Show that patron's info
-    show_a_patron(library_svc.retrieve_patron(bryan.get_memberID()))
+    show_a_patron(library_svc.retrieve_patron(bryan.member_id))
     # Shutdown the database connection
     library_svc.db.close()
 
 def show_a_patron(patron: Patron) -> None:
-    print(f"Patron {patron.get_memberID()} is {patron.get_fname()} {patron.get_lname()} and is {patron.get_age()} years old")
+    print(f"Patron {patron.member_id} is {patron.fname} {patron.lname} and is {patron.age} years old")
 
 if __name__ == "__main__":
     main()

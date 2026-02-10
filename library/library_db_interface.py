@@ -48,17 +48,18 @@ class Library_DB:
         results = self.db.all()
         return results
 
-    def update_patron(self, patron):
+    def update_patron(self, patron) -> bool:
         """Updates a Patron's data in the DB.
         
         :param patron: the new Patron object to be updated
-        :returns: None if the patron parameter is not the correct object
+        :returns: False if the patron parameter is not the correct object
         """
         if not patron:
-            return None
+            return False
         query = Query()
         data = self.convert_patron_to_db_format(patron)
-        self.db.update(data, query.memberID == patron.get_memberID())
+        updated_ids = self.db.update(data, query.memberID == patron.member_id)
+        return len(updated_ids) > 0
 
     def retrieve_patron(self, memberID):
         """Gets a Patron from the database.
