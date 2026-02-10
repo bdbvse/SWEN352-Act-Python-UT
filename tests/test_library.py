@@ -22,6 +22,10 @@ class TestLibrary(unittest.TestCase):
         # with open(self.rootPath + 'tests_data/ebooks.json', 'r') as f:
         #     self.books_data = json.loads(f.read())
 
+    def tearDown(self):
+        self.lib.shutdown()
+        self.lib = None
+
     def test_is_ebook_true(self):
         self.lib.api.get_ebooks = Mock(return_value=self.books_data)
         self.assertTrue(self.lib.is_ebook('learning python'))
