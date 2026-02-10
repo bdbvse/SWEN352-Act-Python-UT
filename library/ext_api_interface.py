@@ -2,7 +2,6 @@
 Filename: ext_api_interface.py
 Description: module used for interacting with a web service
 """
-
 import requests
 
 #: Global constant for the REST API.
@@ -10,19 +9,6 @@ SEARCH_API_URL = "http://openlibrary.org/search.json"
 
 class Books_API:
     """Class used for interacting with the OpenLibrary API."""
-
-    def __make_request(self, query_params: dict[str,str]):
-        """Makes a HTTP request to the given URL.
-        
-        :param query_params: the HTTP query parameters
-        :returns: the JSON body of the request, None if non 200 status code or ConnectionError
-        """
-        try:
-            response = requests.get(SEARCH_API_URL, params=query_params)
-            response.raise_for_status()
-            return response.json()
-        except requests.ConnectionError:
-            return None
 
     def is_book_available(self, book_title: str):
         """Determines if a given book is available to borrow.
@@ -82,3 +68,24 @@ class Books_API:
             if book['edition_count'] >= 1:
                 ebooks.append({'title': book['title'], 'ebook_count': book['edition_count']})
         return ebooks
+
+    def gather_test_data(self, query_params: dict[str,str]):
+        """
+        Expose the raw query to help generate test data.
+        :param query_params:
+        :return:
+        """
+        return self.__make_request(query_params)
+
+    def __make_request(self, query_params: dict[str,str]):
+        """Makes a HTTP request to the given URL.
+
+        :param query_params: the HTTP query parameters
+        :returns: the JSON body of the request, None if non 200 status code or ConnectionError
+        """
+        try:
+            response = requests.get(SEARCH_API_URL, params=query_params)
+            response.raise_for_status()
+            return response.json()
+        except requests.ConnectionError:
+            return None
