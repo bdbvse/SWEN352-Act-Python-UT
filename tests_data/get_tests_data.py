@@ -12,14 +12,11 @@ class GetData:
     def get_ebooks(self, book):
         print("get ebooks: " + book)
         ebooks = self.api.get_ebooks(book)
-        print(ebooks)
-        with open('tests_data/ebooks.txt', 'w') as f:
+        with open('tests_data/ebooks.json', 'w') as f:
             f.write(json.dumps(ebooks))
 
     def get_json(self, book):
-        request_url = "%s?q=%s" % (self.api.API_URL, book)
-        json_data = self.api.make_request(request_url)
-        print(json_data)
+        json_data = self.api.gather_test_data({'q': book.lower()})
         with open('tests_data/openlib_sample_data.json', 'w') as f:
             f.write(json.dumps(json_data))
 
