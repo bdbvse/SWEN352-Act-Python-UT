@@ -20,7 +20,10 @@ class TestExtApiInterface(unittest.TestCase):
     def test_is_book_available_connection_error(self):
         # setup test
         ext_api_interface.requests.get = Mock(side_effect=requests.ConnectionError)
-        self.assertFalse(self.api.is_book_available('bogus book'))
+        # run test
+        result = self.api.is_book_available('bogus book')
+        # validate test
+        self.assertFalse(result)
         ext_api_interface.requests.get.assert_called()
 
     def test_get_ebooks(self):
