@@ -97,7 +97,7 @@ class Library:
         :param patron: the Patron object
         :returns: True if they are in the database, False if not
         """
-        reg_patron = self.db.retrieve_patron(patron.get_memberID())
+        reg_patron = self.db.retrieve_patron(patron.member_id)
         if reg_patron:
             return True
         return False
