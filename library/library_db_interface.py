@@ -85,4 +85,4 @@ class Library_DB:
         :returns: a dictionary of the Patron's data
         """
         return {'fname': patron.fname, 'lname': patron.lname, 'age': patron.age, 'memberID': patron.member_id,
-        'borrowed_books': patron.get_borrowed_books()}
+        'borrowed_books': patron.borrowed_books}
