@@ -25,15 +25,55 @@ class Patron:
 
         if re.search(r'\d', fname) or re.search(r'\d', lname):
             raise InvalidNameException("Name should not contain numbers")
-        self.fname = fname
-        self.lname = lname
-        self.age = age
-        self.memberID = memberID
-        self.borrowed_books = []
+        self.__fname = fname
+        self.__lname = lname
+        self.__age = age
+        self.__member_id = memberID
+        self.__borrowed_books = []
+
+    @property
+    def fname(self) -> str:
+        """Getter for the first name of the Patron.
+
+        :returns: the first name of the Patron
+        """
+        return self.__fname
+
+    @property
+    def lname(self) -> str:
+        """Getter for the last name of the Patron.
+
+        :returns: the last name of the Patron
+        """
+        return self.__lname
+
+    @property
+    def age(self) -> int:
+        """Getter for the age of the Patron.
+
+        :returns: the age of the Patron
+        """
+        return self.__age
+
+    @property
+    def member_id(self) -> str:
+        """Getter for the memberID of the Patron.
+
+        :returns: the memberID of the Patron
+        """
+        return self.__member_id
+
+    @property
+    def borrowed_books(self) -> list[str]:
+        """Gets the list of borrowed books for the Patron.
+
+        :returns: the list of borrowed books
+        """
+        return self.__borrowed_books.copy()
 
     def with_age(self, age: int) -> 'Patron':
         """Creates a new Patron object with the same attributes as the current Patron, but with a different age."""
-        return Patron(self.fname, self.lname, age, self.memberID)
+        return Patron(self.fname, self.lname, age, self.member_id)
 
     def add_borrowed_book(self, book):
         """Adds a book to the list of borrowed books for the Patron
@@ -41,16 +81,9 @@ class Patron:
         :param book: the title of the book
         """
         book = book.lower()
-        if book in self.borrowed_books:
+        if book in self.__borrowed_books:
             return
-        self.borrowed_books.append(book)
-
-    def get_borrowed_books(self):
-        """Gets the list of borrowed books for the Patron.
-        
-        :returns: the list of borrowed books
-        """
-        return self.borrowed_books
+        self.__borrowed_books.append(book)
 
     def return_borrowed_book(self, book):
         """Removes the borrowed book from the list of books currently checked out.
@@ -58,8 +91,8 @@ class Patron:
         :param book: the title of the book to remove
         """
         book = book.lower()
-        if book in self.borrowed_books:
-            self.borrowed_books.remove(book)
+        if book in self.__borrowed_books:
+            self.__borrowed_books.remove(book)
 
     def __eq__(self, other):
         """Equals function for the Patron class."""
@@ -69,30 +102,5 @@ class Patron:
         """Not-equal function for the Patron class."""
         return not self.__eq__(other)
 
-    def get_fname(self):
-        """Getter for the first name of the Patron.
-        
-        :returns: the first name of the Patron
-        """
-        return self.fname
-
-    def get_lname(self):
-        """Getter for the last name of the Patron.
-        
-        :returns: the last name of the Patron
-        """
-        return self.lname
-
-    def get_age(self):
-        """Getter for the age of the Patron.
-        
-        :returns: the age of the Patron
-        """
-        return self.age
-
-    def get_memberID(self):
-        """Getter for the memberID of the Patron.
-        
-        :returns: the memberID of the Patron
-        """
-        return self.memberID
+    def __repr__(self):
+        return f"<Patron '{self.member_id}' [{self.fname} {self.lname} @ {self.age}]>"

@@ -11,7 +11,7 @@ SEARCH_API_URL = "http://openlibrary.org/search.json"
 class Books_API:
     """Class used for interacting with the OpenLibrary API."""
 
-    def make_request(self, query_params: dict[str,str]):
+    def __make_request(self, query_params: dict[str,str]):
         """Makes a HTTP request to the given URL.
         
         :param query_params: the HTTP query parameters
@@ -30,7 +30,7 @@ class Books_API:
         :param book_title: the title of the book
         :returns: True if available, False if not
         """
-        json_data = self.make_request({'q': book_title})
+        json_data = self.__make_request({'q': book_title})
         if json_data and len(json_data['docs']) >= 1:
             return True
         return False
@@ -41,7 +41,7 @@ class Books_API:
         :param author: the name of the author
         :returns: the titles of all the books in a list form
         """
-        json_data = self.make_request({'author': author})
+        json_data = self.__make_request({'author': author})
         if not json_data:
             return []
         books = []
@@ -55,7 +55,7 @@ class Books_API:
         :param book_title: the title of the book
         :returns: a list of dictionaries with book data
         """
-        json_data = self.make_request({'q': book_title.lower()})
+        json_data = self.__make_request({'q': book_title.lower()})
         if not json_data:
             return []
         books_info = []
@@ -74,7 +74,7 @@ class Books_API:
         :param book_title: the title of the book
         :returns: data about the ebooks
         """
-        json_data = self.make_request({'q': book_title.lower()})
+        json_data = self.__make_request({'q': book_title.lower()})
         if not json_data:
             return []
         ebooks = []

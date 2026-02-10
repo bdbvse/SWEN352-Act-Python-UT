@@ -15,6 +15,10 @@ class Library:
         self.db = Library_DB()
         self.api = Books_API()
 
+    def shutdown(self):
+        """Shuts down the library by closing the database."""
+        self.db.close_db()
+
     ############################################################################
     ################################ API METHODS ###############################
     ############################################################################

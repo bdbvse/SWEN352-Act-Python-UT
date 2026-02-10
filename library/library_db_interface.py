@@ -27,7 +27,7 @@ class Library_DB:
         """
         if not patron:
             return None
-        if self.retrieve_patron(patron.get_memberID()): # patron already in db
+        if self.retrieve_patron(patron.member_id): # patron already in db
             return None
         data = self.convert_patron_to_db_format(patron)
         return self.db.insert(data)
@@ -84,5 +84,5 @@ class Library_DB:
         :param patron: the Patron python object
         :returns: a dictionary of the Patron's data
         """
-        return {'fname': patron.get_fname(), 'lname': patron.get_lname(), 'age': patron.get_age(), 'memberID': patron.get_memberID(),
+        return {'fname': patron.fname, 'lname': patron.lname, 'age': patron.age, 'memberID': patron.member_id,
         'borrowed_books': patron.get_borrowed_books()}
