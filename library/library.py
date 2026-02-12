@@ -10,9 +10,9 @@ from library.ext_api_interface import Books_API
 class Library:
     """Class used to represent a library."""
 
-    def __init__(self):
+    def __init__(self, start_clean=False):
         """Constructor for the Library class."""
-        self.db = Library_DB()
+        self.db = Library_DB(start_clean)
         self.api = Books_API()
 
     def shutdown(self):
@@ -23,7 +23,7 @@ class Library:
     ################################ API METHODS ###############################
     ############################################################################
 
-    def is_ebook(self, book):
+    def is_ebook(self, book: str) -> bool:
         """Checks if the book is an e-book.
         
         :param book: the title of the book
@@ -36,7 +36,7 @@ class Library:
                 return True
         return False
 
-    def get_ebooks_count(self, book):
+    def get_ebooks_count(self, book: str) -> int:
         """Gets the number of ebooks for a given book.
         
         :param book: the title of the book
@@ -48,7 +48,7 @@ class Library:
             ebook_count += ebook['ebook_count']
         return ebook_count
 
-    def is_book_by_author(self, author, book):
+    def is_book_by_author(self, author, book: str) -> bool:
         """Determines if the book was written by a given author.
         
         :param author: the name of the author
@@ -79,7 +79,7 @@ class Library:
     ################################# DB METHODS ###############################
     ############################################################################
 
-    def register_patron(self, fname, lname, age, member_id):
+    def register_patron(self, fname, lname, age, member_id) -> Patron:
         """Registers a Patron with the library and adds them to the database.
         
         :param fname: the Patron's first name
@@ -89,7 +89,10 @@ class Library:
         :returns: None if the Patron is already in the database, else their ID
         """
         patron = Patron(fname, lname, age, member_id)
-        return self.db.insert_patron(patron)
+        result = self.db.insert_patron(patron)
+        if result is None:
+            print("Patron already registered")
+        return patron
 
     def is_patron_registered(self, patron):
         """Determines if the Patron is already registered in the database.
@@ -102,7 +105,7 @@ class Library:
             return True
         return False
 
-    def borrow_book(self, book, patron):
+    def borrow_book(self, patron: Patron, book: str):
         """Borrows a book for a Patron.
         
         :param book: the title of the book
@@ -111,7 +114,7 @@ class Library:
         patron.add_borrowed_book(book.lower())
         self.db.update_patron(patron)
 
-    def return_borrowed_book(self, book, patron):
+    def return_borrowed_book(self, patron: Patron, book: str):
         """Returns a borrowed book for a Patron.
         
         :param book: the title of the book
@@ -127,5 +130,5 @@ class Library:
         :param patron: the Patron object
         :returns: True if the Patron has borrowed the book, False if not
         """
-        borrowed_books = patron.get_borrowed_books()
+        borrowed_books = patron.borrowed_books
         return book.lower() in borrowed_books
